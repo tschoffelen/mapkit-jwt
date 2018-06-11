@@ -1,0 +1,17 @@
+{
+   "name": "mapkit/jwt",
+   "description": "Simple class to create MapKit and MusicKit JWT tokens.",
+   "license": "MIT",
+   "authors": [
+      {
+         "name": "Thomas Schoffelen",
+         "email": "thomas@includable.com"
+      }
+   ],
+   "autoload": {
+      "psr-4": {
+         "MapKit\\": "src"
+      }
+   },
+   "minimum-stability": "dev"
+}
