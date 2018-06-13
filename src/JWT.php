@@ -28,7 +28,7 @@ class JWT
     {
         $header = [
             'alg' => 'ES256',
-            'typ' => 'JTW',
+            'typ' => 'JWT',
             'kid' => $key_id
         ];
         $body = [
