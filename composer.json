@@ -10,7 +10,7 @@
    ],
    "autoload": {
       "psr-4": {
-         "MapKit\\": "src/"
+         "Mapkit\\": "src/"
       }
    },
    "minimum-stability": "dev"
