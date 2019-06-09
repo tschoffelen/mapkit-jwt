@@ -12,7 +12,8 @@ namespace Mapkit;
  *
  * @package Mapkit
  */
-class JWT {
+class JWT
+{
     /**
      * Generates a JWT token that can be used for MapKit JS or MusicKit authorization.
      *
@@ -22,7 +23,8 @@ class JWT {
      * @param string $origin Optionally limit header origin
      * @return string|false
      */
-    public static function getToken($private_key, $key_id, $team_id, $origin = null, $expiry = null) {
+    public static function getToken($private_key, $key_id, $team_id, $origin = null, $expiry = null)
+    {
         $header = [
             'alg' => 'ES256',
             'typ' => 'JWT',
@@ -58,7 +60,8 @@ class JWT {
      * @param string $data
      * @return string
      */
-    private static function encode($data) {
+    private static function encode($data)
+    {
         $encoded = strtr(base64_encode($data), '+/', '-_');
 
         return rtrim($encoded, '=');
