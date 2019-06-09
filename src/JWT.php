@@ -12,9 +12,7 @@ namespace Mapkit;
  *
  * @package Mapkit
  */
-class JWT
-{
-
+class JWT {
     /**
      * Generates a JWT token that can be used for MapKit JS or MusicKit authorization.
      *
@@ -24,30 +22,30 @@ class JWT
      * @param string $origin Optionally limit header origin
      * @return string|false
      */
-    public static function getToken($private_key, $key_id, $team_id, $origin = null)
-    {
+    public static function getToken($private_key, $key_id, $team_id, $origin = null, $expiry = null) {
         $header = [
             'alg' => 'ES256',
             'typ' => 'JWT',
             'kid' => $key_id
         ];
+        $expiry = $expiry ?? (time() + 3600);
         $body = [
             'iss' => $team_id,
             'iat' => time(),
-            'exp' => time() + 3600
+            'exp' => $expiry
         ];
 
-        if($origin) {
+        if ($origin) {
             $body['origin'] = $origin;
         }
 
         $payload = self::encode(json_encode($header)) . '.' . self::encode(json_encode($body));
 
-        if(!$key = openssl_pkey_get_private($private_key)) {
+        if (!$key = openssl_pkey_get_private($private_key)) {
             return false;
         }
 
-        if(!openssl_sign($payload, $result, $key, OPENSSL_ALGO_SHA256)) {
+        if (!openssl_sign($payload, $result, $key, OPENSSL_ALGO_SHA256)) {
             return false;
         }
 
@@ -60,11 +58,9 @@ class JWT
      * @param string $data
      * @return string
      */
-    private static function encode($data)
-    {
+    private static function encode($data) {
         $encoded = strtr(base64_encode($data), '+/', '-_');
 
         return rtrim($encoded, '=');
     }
-
 }
