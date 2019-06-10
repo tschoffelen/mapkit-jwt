@@ -21,20 +21,20 @@ class JWT
      * @param string $key_id Key ID provided by Apple
      * @param string $team_id Apple Developer Team Identifier
      * @param string $origin Optionally limit header origin
+     * @param integer $expiry The expiry timeout in seconds (defaults to 3600)
      * @return string|false
      */
-    public static function getToken($private_key, $key_id, $team_id, $origin = null, $expiry = null)
+    public static function getToken($private_key, $key_id, $team_id, $origin = null, $expiry = 3600)
     {
         $header = [
             'alg' => 'ES256',
             'typ' => 'JWT',
             'kid' => $key_id
         ];
-        $expiry = $expiry ?? (time() + 3600);
         $body = [
             'iss' => $team_id,
             'iat' => time(),
-            'exp' => $expiry
+            'exp' => time() + $expiry
         ];
 
         if ($origin) {
