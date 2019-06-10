@@ -14,7 +14,6 @@ namespace Mapkit;
  */
 class JWT
 {
-
     /**
      * Generates a JWT token that can be used for MapKit JS or MusicKit authorization.
      *
@@ -22,9 +21,10 @@ class JWT
      * @param string $key_id Key ID provided by Apple
      * @param string $team_id Apple Developer Team Identifier
      * @param string $origin Optionally limit header origin
+     * @param integer $expiry The expiry timeout in seconds (defaults to 3600)
      * @return string|false
      */
-    public static function getToken($private_key, $key_id, $team_id, $origin = null)
+    public static function getToken($private_key, $key_id, $team_id, $origin = null, $expiry = 3600)
     {
         $header = [
             'alg' => 'ES256',
@@ -34,20 +34,20 @@ class JWT
         $body = [
             'iss' => $team_id,
             'iat' => time(),
-            'exp' => time() + 3600
+            'exp' => time() + $expiry
         ];
 
-        if($origin) {
+        if ($origin) {
             $body['origin'] = $origin;
         }
 
         $payload = self::encode(json_encode($header)) . '.' . self::encode(json_encode($body));
 
-        if(!$key = openssl_pkey_get_private($private_key)) {
+        if (!$key = openssl_pkey_get_private($private_key)) {
             return false;
         }
 
-        if(!openssl_sign($payload, $result, $key, OPENSSL_ALGO_SHA256)) {
+        if (!openssl_sign($payload, $result, $key, OPENSSL_ALGO_SHA256)) {
             return false;
         }
 
@@ -66,5 +66,4 @@ class JWT
 
         return rtrim($encoded, '=');
     }
-
 }
